@@ -1,34 +1,42 @@
 require 'docking_station.rb'
 
 describe DockingStation do
-  before(:all) do
-    @station = DockingStation.new
-    @bike = Bike.new
-  end
+
+  let (:bike) { double :bike }
 
   it 'should release the working bike' do
-    expect(@bike).to be_an_instance_of(Bike)
-    expect(@bike.working?).to eq(true)
-    end
+    subject.dock_bike (:bike)
+    bike = subject.release_bike
+    expect(bike).to be_working
+  end
 
   it 'should raise error if no bikes available' do
-    expect{@station.release_bike}.to raise_error(RuntimeError)
+    expect{subject.release_bike}.to raise_error(RuntimeError)
   end
 
   it 'should dock a bike to an empty station' do
-    expect(@station.dock(@bike)).to eq([@bike])
-  end
-
-  it 'should raise error if station is full' do
-    expect{@station.capacity.times {@station.dock(Bike.new)}}.to raise_error(RuntimeError)
+    expect(subject.dock_bike :bike).to eq([(:bike)])
   end
 
   it 'should have a default capacity' do
-    expect(@station.capacity).to eq DockingStation::DEFAULT_CAPACITY
+    expect(subject.capacity).to eq DockingStation::DEFAULT_CAPACITY
   end
 
+  it 'should raise error if station is full' do
+    expect{subject.capacity.times {subject.dock_bike(Bike.new)}}.to raise_error(RuntimeError)
+  end
+
+
   it 'should set a given capacity' do
-    expect(@station.capacity = 30).not_to eq DockingStation::DEFAULT_CAPACITY
+    expect(subject.capacity).not_to eq DockingStation.new(30)
+  end
+
+  it 'should not release bike if bike is broken' do
+    bike1 = double(:bike)
+    bike1.report_broken
+    ds1 = DockingStation.new
+    ds1.dock_bike(bike1)
+    expect{ds1.release_bike}.to raise_error(RuntimeError)
   end
 
 end

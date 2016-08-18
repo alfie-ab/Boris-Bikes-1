@@ -1,3 +1,5 @@
+require_relative 'bike.rb'
+
 class DockingStation
 
 attr_reader :bike, :capacity
@@ -10,7 +12,7 @@ DEFAULT_CAPACITY = 20
 
   def release_bike
     working_bikes = @bikes.select{|bike| bike.working?}
-    fail "There are no bikes available" if empty?
+    fail "There are no bikes available" if working_bikes.empty?
     working_bikes.pop
   end
 
@@ -28,22 +30,5 @@ end
 def full?
   @bikes.count >= DEFAULT_CAPACITY
 end
-
-end
-
-
-class Bike
-
-  def initialize
-    @status = true
-  end
-
-  def working?
-    @status
-  end
-
-  def report_broken
-    @status = false
-  end
 
 end
