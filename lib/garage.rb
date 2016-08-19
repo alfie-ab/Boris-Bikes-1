@@ -17,4 +17,8 @@ class Garage
     @garage_bikes.map { |bike| bike.fix_bike }
   end
 
+  def remove_bike(bike)
+    @garage_bikes.delete(bike)
+  end
+
 end

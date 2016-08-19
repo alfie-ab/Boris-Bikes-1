@@ -17,6 +17,15 @@ attr_reader :van_bikes
     end
   end
 
+  def collect_fixed_bike(garage)
+    garage.garage_bikes.each do |bike|
+      if bike.working?
+        @van_bikes << bike
+        garage.remove_bike(bike)
+      end
+    end
+  end
+
   def remove_broken_bike(bike)
     @van_bikes.delete(bike)
   end

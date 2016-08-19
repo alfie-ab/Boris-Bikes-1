@@ -32,4 +32,14 @@ describe Garage do
     expect(subject.garage_bikes).to eq([broken_bike])
   end
 
+  it "should be able to respond to the remove method" do
+    expect(subject).to respond_to(:remove_bike).with(1).arguments
+  end
+
+  it "should remove a bike" do
+    subject.collect_bike(van)
+    subject.remove_bike(broken_bike)
+    expect(subject.garage_bikes).to eq([])
+  end
+
 end
