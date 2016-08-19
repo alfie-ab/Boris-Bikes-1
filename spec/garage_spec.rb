@@ -9,7 +9,7 @@ describe Garage do
     allow(broken_bike).to receive(:working?).and_return(false)
     allow(working_bike).to receive(:working?).and_return(true)
     allow(van).to receive(:van_bikes).and_return([broken_bike])
-    allow(van).to receive(:remove_broken_bike).with(broken_bike) {[]}
+    allow(van).to receive(:remove_bike).with(broken_bike) {[]}
     allow(broken_bike).to receive(:fix_bike).and_return(true)
   end
 

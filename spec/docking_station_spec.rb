@@ -4,10 +4,13 @@ describe DockingStation do
 
   let (:bike) { double :bike }
   let (:bike1) { double :bike1 }
+  let (:van) { double :van }
 
   before(:each) do
     allow(bike).to receive(:working?).and_return(true)
     allow(bike1).to receive(:working?).and_return(false)
+    allow(van).to receive(:van_bikes).and_return([bike])
+    allow(van).to receive(:remove_bike).with(bike) {[]}
   end
 
   it 'should release the working bike' do
@@ -52,8 +55,17 @@ describe DockingStation do
   it 'should delete the broken bike' do
     subject.dock_bike(bike)
     subject.dock_bike(bike1)
-    subject.remove_broken_bike(bike1)
+    subject.remove_bike(bike1)
     expect(subject.bikes).to eq [bike]
+  end
+
+  it "should respond to method" do
+    expect(subject).to respond_to(:collect_bike).with(1).arguments
+  end
+
+  it "should be able to receive fixed bikes from van" do
+    subject.collect_bike(van)
+    expect(subject.bikes.include?(bike)).to eq true
   end
 
 end

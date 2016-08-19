@@ -9,8 +9,12 @@ class Garage
   end
 
   def collect_bike(van)
-    @garage_bikes += van.van_bikes
-    van.van_bikes.each { |bike| van.remove_broken_bike(bike) }
+    van.van_bikes.each do |bike|
+      if !bike.working?
+        @garage_bikes << bike
+        van.remove_bike(bike)
+      end
+    end
   end
 
   def repair_bike

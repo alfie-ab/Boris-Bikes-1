@@ -12,7 +12,7 @@ attr_reader :van_bikes
     station.bikes.each do |bike|
       if !bike.working?
         @van_bikes << bike
-        station.remove_broken_bike(bike)
+        station.remove_bike(bike)
       end
     end
   end
@@ -26,7 +26,7 @@ attr_reader :van_bikes
     end
   end
 
-  def remove_broken_bike(bike)
+  def remove_bike(bike)
     @van_bikes.delete(bike)
   end
 

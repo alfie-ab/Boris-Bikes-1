@@ -21,8 +21,17 @@ DEFAULT_CAPACITY = 20
     @bikes << bike
   end
 
-  def remove_broken_bike(bike)
+  def remove_bike(bike)
     @bikes.delete(bike)
+  end
+
+  def collect_bike(van)
+    van.van_bikes.each do |bike|
+      if bike.working?
+        @bikes << bike
+        van.remove_bike(bike)
+      end
+    end
   end
 
 private

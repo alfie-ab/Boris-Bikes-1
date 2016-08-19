@@ -11,7 +11,7 @@ describe Van do
     allow(broken_bike).to receive(:working?).and_return(false)
     allow(working_bike).to receive(:working?).and_return(true)
     allow(station).to receive(:bikes).and_return([broken_bike, working_bike])
-    allow(station).to receive(:remove_broken_bike).with(broken_bike) {[working_bike]}
+    allow(station).to receive(:remove_bike).with(broken_bike) {[working_bike]}
     allow(garage).to receive(:garage_bikes).and_return([working_bike, broken_bike])
     allow(garage).to receive(:remove_bike).with(working_bike) {[broken_bike]}
   end
@@ -27,7 +27,7 @@ describe Van do
 
   it "should remove a bike" do
     subject.collect_bike(station)
-    subject.remove_broken_bike(broken_bike)
+    subject.remove_bike(broken_bike)
     expect(subject.van_bikes).to eq([])
   end
 
