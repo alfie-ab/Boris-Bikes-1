@@ -22,4 +22,10 @@ describe Van do
     expect(subject.van_bikes).to eq([broken_bike])
   end
 
+  it "should remove a bike" do
+    subject.collect_bike(station)
+    subject.remove_broken_bike(broken_bike)
+    expect(subject.van_bikes).to eq([])
+  end
+
 end

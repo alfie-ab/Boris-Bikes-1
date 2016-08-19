@@ -17,4 +17,8 @@ attr_reader :van_bikes
     end
   end
 
+  def remove_broken_bike(bike)
+    @van_bikes.delete(bike)
+  end
+
 end
