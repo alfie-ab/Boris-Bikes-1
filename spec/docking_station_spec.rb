@@ -49,4 +49,11 @@ describe DockingStation do
     expect(subject.release_bike).to eq(bike)
   end
 
+  it 'should delete the broken bike' do
+    subject.dock_bike(bike)
+    subject.dock_bike(bike1)
+    subject.remove_broken_bike(bike1)
+    expect(subject.bikes).to eq [bike]
+  end
+
 end
