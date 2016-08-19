@@ -1,18 +1,15 @@
 class Bike
 
   def initialize
-
-    @broken_bikes = []
-  end
-  def working?
-    true
+    @status = true
   end
 
   def report_broken
-    @broken = true
+    @status = false
   end
 
-  def broken?
-    @broken_bikes << bike
+  def working?
+    @status
   end
+
 end

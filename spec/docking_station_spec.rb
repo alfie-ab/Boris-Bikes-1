@@ -3,11 +3,17 @@ require 'docking_station.rb'
 describe DockingStation do
 
   let (:bike) { double :bike }
+  let (:bike1) { double :bike1 }
+
+  before(:each) do
+    allow(bike).to receive(:working?).and_return(true)
+    allow(bike1).to receive(:working?).and_return(false)
+  end
 
   it 'should release the working bike' do
-    subject.dock_bike (:bike)
-    bike = subject.release_bike
-    expect(bike).to be_working
+    subject.dock_bike(bike)
+    released_bike = subject.release_bike
+    expect(released_bike).to be_working
   end
 
   it 'should raise error if no bikes available' do
@@ -23,7 +29,8 @@ describe DockingStation do
   end
 
   it 'should raise error if station is full' do
-    expect{subject.capacity.times {subject.dock_bike(Bike.new)}}.to raise_error(RuntimeError)
+    20.times {subject.dock_bike(:bike)}
+    expect{subject.dock_bike(:bike)}.to raise_error(RuntimeError)
   end
 
 
@@ -31,12 +38,15 @@ describe DockingStation do
     expect(subject.capacity).not_to eq DockingStation.new(30)
   end
 
-  it 'should not release bike if bike is broken' do
-    bike1 = double(:bike)
-    bike1.report_broken
-    ds1 = DockingStation.new
-    ds1.dock_bike(bike1)
-    expect{ds1.release_bike}.to raise_error(RuntimeError)
+  it 'should not release broken bike if it is the only bike at the docking station' do
+    subject.dock_bike(bike1)
+    expect{subject.release_bike}.to raise_error(RuntimeError)
+  end
+
+  it 'should release only a working bike' do
+    subject.dock_bike(bike1)
+    subject.dock_bike(bike)
+    expect(subject.release_bike).to eq(bike)
   end
 
 end

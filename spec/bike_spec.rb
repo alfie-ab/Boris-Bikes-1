@@ -5,7 +5,8 @@ describe Bike do
 
 
   it 'should report broken' do
-    expect(@bike.report_broken).to eq @status = false
+    bike1 = Bike.new
+    expect(bike1.report_broken).to eq @status = false
   end
 
 end
