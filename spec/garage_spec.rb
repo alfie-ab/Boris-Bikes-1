@@ -10,6 +10,7 @@ describe Garage do
     allow(working_bike).to receive(:working?).and_return(true)
     allow(van).to receive(:van_bikes).and_return([broken_bike])
     allow(van).to receive(:remove_broken_bike).with(broken_bike) {[]}
+    allow(broken_bike).to receive(:fix_bike).and_return(true)
   end
 
   it "should be able to respond to the method" do
@@ -18,6 +19,16 @@ describe Garage do
 
   it "should be able to collect broken bikes" do
     subject.collect_bike(van)
+    expect(subject.garage_bikes).to eq([broken_bike])
+  end
+
+  it "should be able to respond to the method repair" do
+    expect(subject).to respond_to(:repair_bike)
+  end
+
+  it "should be able to return an array of working bikes" do
+    subject.collect_bike(van)
+    subject.repair_bike
     expect(subject.garage_bikes).to eq([broken_bike])
   end
 

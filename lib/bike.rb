@@ -12,4 +12,8 @@ class Bike
     @status
   end
 
+  def fix_bike
+    @status = true
+  end
+
 end

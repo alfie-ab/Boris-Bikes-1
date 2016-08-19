@@ -13,4 +13,8 @@ class Garage
     van.van_bikes.each { |bike| van.remove_broken_bike(bike) }
   end
 
+  def repair_bike
+    @garage_bikes.map { |bike| bike.fix_bike }
+  end
+
 end
