@@ -1,33 +1,24 @@
 require_relative 'docking_station.rb'
 
 class Van
+include BikeContainer
 
-attr_reader :van_bikes
-
-  def initialize
-    @van_bikes = []
-  end
-
-  def collect_bike(station)
-    station.bikes.each do |bike|
-      if !bike.working?
-        @van_bikes << bike
-        station.remove_bike(bike)
-      end
+  def load_bike(source, working)
+    bike = source.remove_bike
+    if working #working bikes to be loaded
+      bike.working? ? add_bike(bike) : source.dock(bike)
+    else #broken bikes to be loaded
+      bike.working? ? source.dock(bike) : add_bike(bike)
     end
   end
 
-  def collect_fixed_bike(garage)
-    garage.garage_bikes.each do |bike|
-      if bike.working?
-        @van_bikes << bike
-        garage.remove_bike(bike)
-      end
+  def unload_bike(target, working)
+    bike = remove_bike
+    if working#working bikes to be unloaded
+      bike.working? ? target.add_bike(bike) : add_bike(bike)
+    else#broken bikes to be unloaded
+      bike.working? ? add_bike(bike) : target.add_bike(bike)
     end
-  end
-
-  def remove_bike(bike)
-    @van_bikes.delete(bike)
   end
 
 end

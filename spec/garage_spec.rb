@@ -1,45 +1,24 @@
 require 'garage'
 
 describe Garage do
+  it_behaves_like BikeContainer
+
   let (:broken_bike) { double :broken_bike }
-  let (:working_bike) { double :working_bike }
-  let (:van) {double :van}
 
   before(:each) do
     allow(broken_bike).to receive(:working?).and_return(false)
-    allow(working_bike).to receive(:working?).and_return(true)
-    allow(van).to receive(:van_bikes).and_return([broken_bike])
-    allow(van).to receive(:remove_bike).with(broken_bike) {[]}
     allow(broken_bike).to receive(:fix_bike).and_return(true)
   end
 
-  it "should be able to respond to the method" do
-    expect(subject).to respond_to(:collect_bike).with(1).arguments
-  end
+  describe "repair_bike" do
+    it "should be able to respond to the method call" do
+      expect(subject).to respond_to(:repair_bike)
+    end
 
-  it "should be able to collect broken bikes" do
-    subject.collect_bike(van)
-    expect(subject.garage_bikes).to eq([broken_bike])
+    it "should be able to return an array of bikes" do
+      subject.add_bike(broken_bike)
+      subject.repair_bike
+      expect(subject.remove_bike).to eq(broken_bike)
+    end
   end
-
-  it "should be able to respond to the method repair" do
-    expect(subject).to respond_to(:repair_bike)
-  end
-
-  it "should be able to return an array of working bikes" do
-    subject.collect_bike(van)
-    subject.repair_bike
-    expect(subject.garage_bikes).to eq([broken_bike])
-  end
-
-  it "should be able to respond to the remove method" do
-    expect(subject).to respond_to(:remove_bike).with(1).arguments
-  end
-
-  it "should remove a bike" do
-    subject.collect_bike(van)
-    subject.remove_bike(broken_bike)
-    expect(subject.garage_bikes).to eq([])
-  end
-
 end
