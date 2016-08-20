@@ -33,6 +33,13 @@ describe Van do
       subject.load_bike(source, true)
       expect(subject.remove_bike).to eq(working_bike)
     end
+
+    it "returns message if bike loaded" do
+      allow(source).to receive(:remove_bike).and_return(working_bike)
+      allow(source).to receive(:dock).with(working_bike) {nil}
+      expect(subject.load_bike(source, true)).to eq("#{working_bike} loaded")
+    end
+
   end
 
   describe "unload_bike" do
@@ -65,6 +72,12 @@ describe Van do
       subject.add_bike(working_bike)
       subject.unload_bike(target, false)
       expect(subject.remove_bike).to eq(working_bike)
+    end
+
+    it "returns message if bike unloaded" do
+      allow(target).to receive(:add_bike).with(broken_bike) {nil}
+      subject.add_bike(broken_bike)
+      expect(subject.unload_bike(target, false)).to eq "#{broken_bike} unloaded"
     end
   end
 
